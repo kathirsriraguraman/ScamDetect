@@ -1,145 +1,119 @@
-SMS Spam Detection Project Report
-1. Project Title
+Intrusion / Spam Detection Using Machine Learning (TF-IDF + NB / Logistic Regression)
 
-SMS Spam Detection using Naive Bayes
+This project builds a machine learning classifier to detect malicious or unwanted entries from a mixed-type dataset. The pipeline automatically adapts to CSV files containing text, numerical, or mixed features, performs preprocessing, trains a model, and evaluates performance using multiple metrics and visualizations.
 
-2. Objective
+📌 Project Overview
 
-The objective of this project is to develop a machine learning model that can automatically classify SMS messages as spam or ham (not spam). This helps in filtering unwanted messages efficiently.
+The goal of this project is to create a flexible ML pipeline that:
 
-3. Dataset
+Loads any uploaded dataset (CSV)
 
-Source: PyCon 2016 SMS Dataset
+Automatically identifies text columns and numeric columns
 
-Format: Tab-separated values (TSV)
+Applies:
 
-Columns:
+TF-IDF vectorization for text features
 
-label → spam or ham
+Standard scaling for numeric features
 
-message → content of the SMS
+Trains a suitable model:
 
-Observation: The dataset is imbalanced with more ham messages than spam.
+Complement Naive Bayes for text-only datasets
 
-4. Libraries Used
+Logistic Regression for mixed-feature datasets
 
-pandas → Data manipulation
+Produces detailed evaluation metrics:
 
-numpy → Numerical operations
+Accuracy
 
-matplotlib.pyplot → Visualization
+Confusion matrix
 
-sklearn.model_selection → Train-test split
+Classification report
 
-sklearn.feature_extraction.text → TF-IDF vectorization
+ROC Curve (Binary or Multiclass)
 
-sklearn.naive_bayes → Multinomial Naive Bayes classifier
+The entire workflow is implemented inside Google Colab so anyone can run it easily.
 
-sklearn.metrics → Evaluation metrics (accuracy, confusion matrix, ROC, AUC)
+🧩 Dataset Description
 
-5. Methodology
-Step 1: Load Dataset
+The script accepts any dataset containing a label column named:
 
-Read the dataset from URL and assign column names label and message.
+Label, label, target, class, or Class
 
-Step 2: Exploratory Data Analysis (EDA)
+The rest of the columns are treated as features.
 
-Visualize the class distribution of ham vs spam using a bar chart.
+✔ Supported Feature Types Feature Type Handling Method Text (string/object) TF-IDF vectorization Numeric StandardScaler Mixed ColumnTransformer (TF-IDF + Scaling) No text columns Converts whole row into a text string ⚙️ Machine Learning Pipeline 1️⃣ Data Loading uploaded = files.upload() df = pd.read_csv(file_name)
 
-Observation: Ham messages dominate, indicating class imbalance.
+2️⃣ Label Detection
 
-Step 3: Train-Test Split
+Auto-detects the label column and separates features (X) and labels (y).
 
-Split the dataset into 80% training and 20% testing.
+3️⃣ Automatic Feature Type Identification
 
-random_state=42 ensures reproducibility.
+Extracts text columns
 
-Step 4: Text Vectorization
+Extracts numeric columns
 
-Convert text messages to numerical features using TF-IDF vectorization.
+If no text column exists → Concatenates entire row as text
 
-fit_transform on training data, transform on test data.
+4️⃣ Model Selection Dataset Type Model Used Text-only Complement Naive Bayes Mixed (text + numeric) Logistic Regression 5️⃣ Model Training
 
-Step 5: Model Training
+Pipeline built using:
 
-Use Multinomial Naive Bayes classifier.
+TfidfVectorizer
 
-Train the model using vectorized training data.
+StandardScaler
 
-Step 6: Evaluation
+ColumnTransformer
 
-Accuracy: Measures overall correctness.
+Pipeline
 
-Confusion Matrix: Visual representation of True Positives, True Negatives, False Positives, and False Negatives.
+6️⃣ Evaluation Metrics
 
-ROC Curve & AUC: Evaluate model performance on imbalanced data.
+Accuracy Score
 
-Step 7: Prediction Function
+Classification Report
 
-check_spam(msg) predicts whether a new SMS is spam or ham.
+Confusion Matrix (heatmap)
 
-6. Results
-Class Distribution
+ROC Curve (binary)
 
-Ham: Majority
+Multiclass ROC (One-vs-Rest)
 
-Spam: Minority
+📊 Visualizations ✔ Confusion Matrix
 
-Indicates need for careful evaluation beyond accuracy.
+Automatically plots a labeled heatmap showing predictions vs ground truth.
 
-Model Accuracy
+✔ Class Distribution
 
-Achieved around ~98% accuracy (depending on train-test split).
+Shows the count of each class before training.
+
+✔ ROC / AUC
+
+Binary → Standard ROC curve
+
+Multiclass → One-vs-Rest ROC curves
+
+📁 Project Files File Purpose YourNotebook.ipynb Main ML training and evaluation notebook Dataset.csv Input dataset uploaded by the user README.md Documentation for GitHub ▶️ How to Run This Project
+
+Open Google Colab
+https://colab.research.google.com/
+
+Upload the notebook
+Run each cell one by one.
+
+Upload your CSV
+The code automatically detects and processes your dataset.
+
+View Results
+The notebook will output:
+
+Accuracy
 
 Confusion Matrix
-          Predicted
-          Ham   Spam
-Actual Ham  ...
-       Spam ...
-
-
-True Positives (spam correctly predicted)
-
-True Negatives (ham correctly predicted)
-
-False Positives / False Negatives
 
 ROC Curve
 
-AUC = ~0.99 (high performance)
+Predictions
 
-Shows the model can distinguish spam from ham effectively.
-
-Sample Prediction
-
-Input: "http://free-gift-online-login-security.com"
-
-Prediction: "spam"
-
-7. Conclusion
-
-The project successfully implemented a spam detection system using Naive Bayes.
-
-The model can predict new SMS messages and shows high performance in evaluation metrics.
-
-Confusion matrix and ROC-AUC confirm the model handles imbalanced data well.
-
-8. Future Work
-
-Handle class imbalance with weighted classes or SMOTE.
-
-Preprocess text (lowercase, remove punctuation, stopwords).
-
-Try advanced models (SVM, Logistic Regression, Deep Learning).
-
-Hyperparameter tuning for Naive Bayes (e.g., alpha smoothing).
-
-Deploy as a web app for real-time spam detection.
-
-9. References
-
-PyCon 2016 SMS Spam Dataset
-
-Scikit-learn Documentation
-
-TF-IDF Vectorization
+🔍 Example Results (Sample) Accuracy: 0.94
